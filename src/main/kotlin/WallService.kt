@@ -1,20 +1,20 @@
 @file:Suppress("NAME_SHADOWING")
 
-import java.util.*
-
-class WallService {
+ class WallService {
     private var posts = emptyArray<Post>()
+    private var randomValues = 0
+     fun add(post: Post): Post {
+        val uniqueIdSet = mutableSetOf<Int>()
 
-    fun add(post: Post): Post {
+        val post = post.copy(id = uniqueIdGenerate(randomValues, uniqueIdSet))
+//         val post = post.copy(id = 1) // для теста Update
 
-        val randomValues = Random().nextInt(1_000_000_000)
-        val post = post.copy(id = randomValues.toLong())
-        posts += post
+         posts += post
         println(posts.last())
         return posts.last()
     }
 
-    fun update(post: Post): Boolean {
+     fun update(post: Post): Boolean {
         val postId = post.component1()
         val postNew = post
         for ((index, post) in posts.withIndex()) {
@@ -44,12 +44,27 @@ class WallService {
                     likes = postNew.likes,
                 )
                 println(posts[index])
-
-
                 return true
             }
         }
         return false
 
     }
-}
+
+    private fun uniqueIdGenerate(
+        randomValues: Int,
+        uniqueIdSet: MutableSet<Int>,
+    ): Long {
+        while (true) {
+            val randomValues = (1..1_000_000).shuffled().last()
+            println(randomValues)
+            if (uniqueIdSet.contains(randomValues)) continue
+            else {
+                val keyId = randomValues
+                uniqueIdSet.add(keyId)
+            }
+            break
+        }
+        return randomValues.toLong()
+    }
+ }
