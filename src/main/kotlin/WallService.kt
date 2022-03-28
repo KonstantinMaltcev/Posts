@@ -4,10 +4,10 @@
     private var posts = emptyArray<Post>()
     private var randomValues = 0
      fun add(post: Post): Post {
-        val uniqueIdSet = mutableSetOf<Int>()
+//        val uniqueIdSet = mutableSetOf<Int>()
 
-        val post = post.copy(id = uniqueIdGenerate(randomValues, uniqueIdSet))
-//         val post = post.copy(id = 1) // для теста Update
+//        val post = post.copy(id = uniqueIdGenerate(randomValues, uniqueIdSet))
+         val post = post.copy(id = 1) // для теста Update
 
          posts += post
         println(posts.last())
@@ -51,20 +51,20 @@
 
     }
 
-    private fun uniqueIdGenerate(
-        randomValues: Int,
-        uniqueIdSet: MutableSet<Int>,
-    ): Long {
-        while (true) {
-            val randomValues = (1..1_000_000).shuffled().last()
-            println(randomValues)
-            if (uniqueIdSet.contains(randomValues)) continue
-            else {
-                val keyId = randomValues
-                uniqueIdSet.add(keyId)
-            }
-            break
-        }
-        return randomValues.toLong()
-    }
+//    private fun uniqueIdGenerate(
+//        randomValues: Int,
+//        uniqueIdSet: MutableSet<Int>,
+//    ): Long {
+//        while (true) {
+//            val randomValues = (1..3).shuffled().last()
+//            println(randomValues)
+//            if (uniqueIdSet.contains(randomValues)) continue
+//            else {
+//                val keyId = randomValues
+//                uniqueIdSet.add(keyId)
+//            }
+//            break
+//        }
+//        return randomValues.toLong()
+//    }
  }
