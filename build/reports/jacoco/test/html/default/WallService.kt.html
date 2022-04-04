@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WallService.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Post</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">WallService.kt</span></div><h1>WallService.kt</h1><pre class="source lang-java linenums">@file:Suppress(&quot;NAME_SHADOWING&quot;)
+
+<span class="fc" id="L3">class WallService {</span>
+<span class="fc" id="L4">    private var posts = emptyArray&lt;Post&gt;()</span>
+    private var randomValues = 0
+    fun add(post: Post): Post {
+<span class="fc" id="L7">        val uniqueIdSet = mutableSetOf&lt;Int&gt;()</span>
+
+<span class="fc" id="L9">        val post = post.copy(id = uniqueIdGenerate(randomValues, uniqueIdSet))</span>
+
+<span class="fc" id="L11">        posts += post</span>
+<span class="fc" id="L12">        println(posts.last())</span>
+<span class="fc" id="L13">        return posts.last()</span>
+    }
+
+    fun update(post: Post): Boolean {
+<span class="fc" id="L17">        val postId = post.component1()</span>
+<span class="fc" id="L18">        val postNew = post</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        for ((index, post) in posts.withIndex()) {</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">            if (post.id == postId) {</span>
+<span class="fc" id="L21">                posts[index] = post.copy(</span>
+<span class="fc" id="L22">                    ownerId = postNew.ownerId,</span>
+//                    fromId = postNew.fromId, РќРµ РѕР±РЅРѕРІР»СЏРµРј ID РІР»Р°РґРµР»СЊС†Р° Р·Р°РїРёСЃРё
+<span class="fc" id="L24">                    createdBy = postNew.createdBy,</span>
+<span class="fc" id="L25">                    text = postNew.text,</span>
+<span class="fc" id="L26">                    replyOwnerId = postNew.replyOwnerId,</span>
+<span class="fc" id="L27">                    replyPostId = postNew.replyPostId,</span>
+<span class="fc" id="L28">                    friendsOnly = postNew.friendsOnly,</span>
+<span class="fc" id="L29">                    comments = postNew.comments,</span>
+<span class="fc" id="L30">                    copyright = postNew.copyright,</span>
+<span class="fc" id="L31">                    reposts = postNew.reposts,</span>
+<span class="fc" id="L32">                    postType = postNew.postType,</span>
+<span class="fc" id="L33">                    views = postNew.views,</span>
+<span class="fc" id="L34">                    postSource = postNew.postSource,</span>
+<span class="fc" id="L35">                    geo = postNew.geo,</span>
+<span class="fc" id="L36">                    copyHistory = postNew.copyHistory,</span>
+<span class="fc" id="L37">                    signerId = postNew.signerId,</span>
+<span class="fc" id="L38">                    canPin = postNew.canPin,</span>
+<span class="fc" id="L39">                    canDelete = postNew.canDelete,</span>
+<span class="fc" id="L40">                    canEdit = postNew.canEdit,</span>
+<span class="fc" id="L41">                    isPinned = postNew.isPinned,</span>
+<span class="fc" id="L42">                    markedAsAds = postNew.markedAsAds,</span>
+<span class="fc" id="L43">                    isFavorite = postNew.isFavorite,</span>
+<span class="fc" id="L44">                    donut = postNew.donut,</span>
+<span class="fc" id="L45">                    postponedId = postNew.postponedId,</span>
+<span class="fc" id="L46">                    likes = postNew.likes,</span>
+                )
+<span class="fc" id="L48">                return true</span>
+            }
+        }
+<span class="fc" id="L51">        return false</span>
+
+    }
+
+    fun clear() {
+<span class="nc" id="L56">        posts = emptyArray()</span>
+<span class="nc" id="L57">    }</span>
+
+    private fun uniqueIdGenerate(
+        randomValues: Int,
+        uniqueIdSet: MutableSet&lt;Int&gt;,
+    ): Int {
+<span class="fc" id="L63">        while (true) {</span>
+<span class="fc" id="L64">            val randomValues = (1..3).shuffled().last()</span>
+<span class="fc" id="L65">            println(randomValues)</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            if (uniqueIdSet.contains(randomValues)) continue</span>
+            else {
+<span class="fc" id="L68">                uniqueIdSet.add(randomValues)</span>
+            }
+<span class="fc" id="L70">            break</span>
+        }
+<span class="fc" id="L72">        return randomValues</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

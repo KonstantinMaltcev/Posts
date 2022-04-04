@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Post.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Post</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Post.kt</span></div><h1>Post.kt</h1><pre class="source lang-java linenums">import DataType.*
+import Platform.ANDROID
+import PostSourceType.*
+
+<span class="fc" id="L5">data class Post(</span>
+<span class="fc" id="L6">    internal val id: Int,                  // Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїРёСЃРё.</span>
+<span class="fc" id="L7">    val ownerId: Long,                      // Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РІР»Р°РґРµР»СЊС†Р° СЃС‚РµРЅС‹, РЅР° РєРѕС‚РѕСЂРѕР№ СЂР°Р·РјРµС‰РµРЅР° Р·Р°РїРёСЃСЊ.</span>
+<span class="pc" id="L8">    val fromId: Long,                       // Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р°РІС‚РѕСЂР° Р·Р°РїРёСЃРё (РѕС‚ С‡СЊРµРіРѕ РёРјРµРЅРё РѕРїСѓР±Р»РёРєРѕРІР°РЅР° Р·Р°РїРёСЃСЊ).</span>
+<span class="fc" id="L9">    val createdBy: Long,                    // Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°, РєРѕС‚РѕСЂС‹Р№ РѕРїСѓР±Р»РёРєРѕРІР°Р» Р·Р°РїРёСЃСЊ.</span>
+<span class="pc" id="L10">    val date: Int,                          // Р’СЂРµРјСЏ РїСѓР±Р»РёРєР°С†РёРё Р·Р°РїРёСЃРё РІ С„РѕСЂРјР°С‚Рµ unixtime.</span>
+<span class="fc" id="L11">    val text: String,                       // РўРµРєСЃС‚ Р·Р°РїРёСЃРё.</span>
+<span class="fc" id="L12">    val replyOwnerId: Long,                 // Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РІР»Р°РґРµР»СЊС†Р° Р·Р°РїРёСЃРё, РІ РѕС‚РІРµС‚ РЅР° РєРѕС‚РѕСЂСѓСЋ Р±С‹Р»Р° РѕСЃС‚Р°РІР»РµРЅР° С‚РµРєСѓС‰Р°СЏ.</span>
+<span class="fc" id="L13">    val replyPostId: Long,                  // Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїРёСЃРё, РІ РѕС‚РІРµС‚ РЅР° РєРѕС‚РѕСЂСѓСЋ Р±С‹Р»Р° РѕСЃС‚Р°РІР»РµРЅР° С‚РµРєСѓС‰Р°СЏ.</span>
+<span class="fc" id="L14">    val friendsOnly: Boolean,               // РѕРїС†РёСЏ В«РўРѕР»СЊРєРѕ РґР»СЏ РґСЂСѓР·РµР№В».</span>
+<span class="fc" id="L15">    val comments: Comments,                 // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ РєРѕРјРјРµРЅС‚Р°СЂРёСЏС… Рє Р·Р°РїРёСЃРё, РѕР±СЉРµРєС‚ СЃ РїРѕР»СЏРјРё:</span>
+<span class="fc" id="L16">    val copyright: Copyright,               // Р�СЃС‚РѕС‡РЅРёРє РјР°С‚РµСЂРёР°Р»Р°, РѕР±СЉРµРєС‚ СЃ РїРѕР»СЏРјРё:</span>
+<span class="fc" id="L17">    val reposts: Reposts,                   // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ СЂРµРїРѕСЃС‚Р°С… Р·Р°РїРёСЃРё (В«Р Р°СЃСЃРєР°Р·Р°С‚СЊ РґСЂСѓР·СЊСЏРјВ»).</span>
+<span class="fc" id="L18">    val postType: PostType,                 // РўРёРї Р·Р°РїРёСЃРё, РјРѕР¶РµС‚ РїСЂРёРЅРёРјР°С‚СЊ СЃР»РµРґСѓСЋС‰РёРµ Р·РЅР°С‡РµРЅРёСЏ: post, copy, reply, postpone, suggest.</span>
+<span class="fc" id="L19">    val views: Views,                       // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ РїСЂРѕСЃРјРѕС‚СЂР°С… Р·Р°РїРёСЃРё</span>
+<span class="fc" id="L20">    val postSource: PostSource?,             // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃРїРѕСЃРѕР±Рµ СЂР°Р·РјРµС‰РµРЅРёСЏ Р·Р°РїРёСЃРё</span>
+<span class="fc" id="L21">    val geo: Geo?,                           // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРё</span>
+<span class="fc" id="L22">    val copyHistory: Array&lt;Reposts&gt;?,        // РњР°СЃСЃРёРІ, СЃРѕРґРµСЂР¶Р°С‰РёР№ РёСЃС‚РѕСЂРёСЋ СЂРµРїРѕСЃС‚РѕРІ РґР»СЏ Р·Р°РїРёСЃРё.</span>
+<span class="fc" id="L23">    val signerId: Long,                     // Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р°РІС‚РѕСЂР°, РµСЃР»Рё Р·Р°РїРёСЃСЊ Р±С‹Р»Р° РѕРїСѓР±Р»РёРєРѕРІР°РЅР° РѕС‚ РёРјРµРЅРё СЃРѕРѕР±С‰РµСЃС‚РІР° Рё РїРѕРґРїРёСЃР°РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј;</span>
+<span class="fc" id="L24">    val canPin: Boolean,                    // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, РјРѕР¶РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ Р·Р°РєСЂРµРїРёС‚СЊ Р·Р°РїРёСЃСЊ</span>
+<span class="fc" id="L25">    val canDelete: Boolean,                 // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, РјРѕР¶РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СѓРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ</span>
+<span class="fc" id="L26">    val canEdit: Boolean,                   // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, РјРѕР¶РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Р·Р°РїРёСЃСЊ</span>
+<span class="fc" id="L27">    val isPinned: Boolean,                  // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, С‡С‚Рѕ Р·Р°РїРёСЃСЊ Р·Р°РєСЂРµРїР»РµРЅР°.</span>
+<span class="fc" id="L28">    val markedAsAds: Boolean,               // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, СЃРѕРґРµСЂР¶РёС‚ Р»Рё Р·Р°РїРёСЃСЊ РѕС‚РјРµС‚РєСѓ В«СЂРµРєР»Р°РјР°В»</span>
+<span class="fc" id="L29">    val isFavorite: Boolean,                // РћР±СЉРµРєС‚ РґРѕР±Р°РІР»РµРЅ РІ Р·Р°РєР»Р°РґРєРё Сѓ С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ?</span>
+<span class="fc" id="L30">    val donut: Donut,                       // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ Р·Р°РїРёСЃРё VK Donut:</span>
+<span class="fc" id="L31">    val postponedId: Long,                  // Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕС‚Р»РѕР¶РµРЅРЅРѕР№ Р·Р°РїРёСЃРё. Р­С‚Рѕ РїРѕР»Рµ РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‚РѕРіРґР°, РєРѕРіРґР° Р·Р°РїРёСЃСЊ СЃС‚РѕСЏР»Р° РЅР° С‚Р°Р№РјРµСЂРµ.</span>
+<span class="fc" id="L32">    val likes: Likes,                       // Р�СЃС‚РѕС‡РЅРёРє РјР°С‚РµСЂРёР°Р»Р°, РѕР±СЉРµРєС‚ СЃ РїРѕР»СЏРјРё:</span>
+<span class="pc" id="L33">    val attachments: Array&lt;Attachments&gt;?    // Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ РјРµРґРёР°РІР»РѕР¶РµРЅРёСЏС…</span>
+) {
+
+<span class="fc" id="L36">    data class Comments(</span>
+<span class="pc" id="L37">        val count: Int = 0,                 // РєРѕР»РёС‡РµСЃС‚РІРѕ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ;</span>
+<span class="pc" id="L38">        val canPost: Boolean = true,        // РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, РјРѕР¶РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ Р·Р°РїРёСЃСЊ</span>
+<span class="pc" id="L39">        val groupsCanPost: Boolean = true,  // РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, РјРѕРіСѓС‚ Р»Рё СЃРѕРѕР±С‰РµСЃС‚РІР° РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ Р·Р°РїРёСЃСЊ;</span>
+<span class="pc" id="L40">        val canClose: Boolean = true,       // РјРѕР¶РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ Р·Р°РєСЂС‹С‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёРё Рє Р·Р°РїРёСЃРё;</span>
+<span class="pc" id="L41">        val canOpen: Boolean = true,        // РјРѕР¶РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РѕС‚РєСЂС‹С‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёРё Рє Р·Р°РїРёСЃРё.</span>
+<span class="fc" id="L42">    )</span>
+
+<span class="fc" id="L44">    data class Donut(</span>
+<span class="pc" id="L45">        val usDonat: Boolean = true,        // Р·Р°РїРёСЃСЊ РґРѕСЃС‚СѓРїРЅР° С‚РѕР»СЊРєРѕ РїР»Р°С‚РЅС‹Рј РїРѕРґРїРёСЃС‡РёРєР°Рј VK Donut;</span>
+<span class="pc" id="L46">        val paidDuration: Int = 0,          // РІСЂРµРјСЏ, РІ С‚РµС‡РµРЅРёРµ РєРѕС‚РѕСЂРѕРіРѕ Р·Р°РїРёСЃСЊ Р±СѓРґРµС‚ РґРѕСЃС‚СѓРїРЅР° С‚РѕР»СЊРєРѕ РїР»Р°С‚РЅС‹Рј РїРѕРґРїРёСЃС‡РёРєР°Рј VK Donut;</span>
+<span class="pc" id="L47">        val placeholder: String = &quot;Р’С‹ РЅРµ РјРѕР¶РµС‚Рµ РІРёРґРµС‚СЊ Р·Р°РїРёСЃСЊ, Сѓ Р’Р°СЃ РЅРµС‚ РїРѕРґРїРёСЃРєРё&quot;,//Р·Р°РіР»СѓС€РєР° РґР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, РєРѕС‚РѕСЂС‹Рµ РЅРµ РѕС„РѕСЂРјРёР»Рё РїРѕРґРїРёСЃРєСѓ VK Donut.</span>
+<span class="pc" id="L48">        val canPublishFreeCopy: Boolean = false,//РјРѕР¶РЅРѕ Р»Рё РѕС‚РєСЂС‹С‚СЊ Р·Р°РїРёСЃСЊ РґР»СЏ РІСЃРµС… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, Р° РЅРµ С‚РѕР»СЊРєРѕ РїРѕРґРїРёСЃС‡РёРєРѕРІ VK Donut;</span>
+<span class="pc" id="L49">        val editMode: EditMode = EditMode.all,//Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, РєР°РєРёРµ Р·РЅР°С‡РµРЅРёСЏ VK Donut РјРѕР¶РЅРѕ РёР·РјРµРЅРёС‚СЊ РІ Р·Р°РїРёСЃРё. Р’РѕР·РјРѕР¶РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ:</span>
+            /**
+             * all вЂ” РІСЃСЋ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ VK Donut.
+             * duration вЂ” РІСЂРµРјСЏ, РІ С‚РµС‡РµРЅРёРµ РєРѕС‚РѕСЂРѕРіРѕ Р·Р°РїРёСЃСЊ Р±СѓРґРµС‚ РґРѕСЃС‚СѓРїРЅР° С‚РѕР»СЊРєРѕ РїР»Р°С‚РЅС‹Рј РїРѕРґРїРёСЃС‡РёРєР°Рј VK Donut.
+             * */
+<span class="fc" id="L54">    )</span>
+
+<span class="fc" id="L56">    data class PostSource(</span>
+<span class="pc" id="L57">        val type: PostSourceType = VK,</span>
+<span class="pc" id="L58">        val platform: Platform = ANDROID,</span>
+<span class="pc" id="L59">        val data: DataType = LIKE,</span>
+<span class="pc" id="L60">        val url: String = &quot;&quot;,</span>
+<span class="fc" id="L61">    )</span>
+
+<span class="fc" id="L63">    data class Reposts(</span>
+<span class="pc" id="L64">        val count: Int = 0,                   // С‡РёСЃР»Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, СЃРєРѕРїРёСЂРѕРІР°РІС€РёС… Р·Р°РїРёСЃСЊ;</span>
+<span class="pc" id="L65">        val userReposted: Boolean = false,    // РЅР°Р»РёС‡РёРµ СЂРµРїРѕСЃС‚Р° РѕС‚ С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.</span>
+<span class="fc" id="L66">    )</span>
+
+<span class="fc" id="L68">    class Geo(</span>
+<span class="pc" id="L69">        val type: String = &quot;None&quot;,                       // С‚РёРї РјРµСЃС‚Р°</span>
+<span class="pc" id="L70">        val coordinates: String = &quot;&quot;,                // РєРѕРѕСЂРґРёРЅР°С‚С‹ РјРµСЃС‚Р°</span>
+<span class="pc" id="L71">        val place: String = &quot;&quot;,                     // РѕРїРёСЃР°РЅРёРµ РјРµСЃС‚Р° (РµСЃР»Рё РѕРЅРѕ РґРѕР±Р°РІР»РµРЅРѕ)</span>
+<span class="fc" id="L72">    )</span>
+
+<span class="fc" id="L74">    data class Copyright(</span>
+<span class="pc" id="L75">        val id: Int = 0,</span>
+<span class="pc" id="L76">        val link: String = &quot;&quot;,</span>
+<span class="pc" id="L77">        val name: String = &quot;None&quot;,</span>
+<span class="pc" id="L78">        val type: String = &quot;&quot;,</span>
+<span class="fc" id="L79">    )</span>
+
+<span class="fc" id="L81">    data class Views(</span>
+<span class="pc" id="L82">        val count: Int = 0,                 //С‡РёСЃР»Рѕ РїСЂРѕСЃРјРѕС‚СЂРѕРІ Р·Р°РїРёСЃРё</span>
+<span class="fc" id="L83">    )</span>
+
+<span class="fc" id="L85">    data class Likes(</span>
+<span class="pc" id="L86">        val count: Int = 0,                 // С‡РёСЃР»Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, РєРѕС‚РѕСЂС‹Рј РїРѕРЅСЂР°РІРёР»Р°СЃСЊ Р·Р°РїРёСЃСЊ;</span>
+<span class="pc" id="L87">        val userLikes: Boolean = false,     // РЅР°Р»РёС‡РёРµ РѕС‚РјРµС‚РєРё В«РњРЅРµ РЅСЂР°РІРёС‚СЃСЏВ» РѕС‚ С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</span>
+<span class="pc" id="L88">        val canLike: Boolean = true,        // РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, РјРѕР¶РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїРѕСЃС‚Р°РІРёС‚СЊ РѕС‚РјРµС‚РєСѓ В«РњРЅРµ РЅСЂР°РІРёС‚СЃСЏВ»</span>
+<span class="pc" id="L89">        val canPublish: Boolean = true,     // РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРј, РјРѕР¶РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃРґРµР»Р°С‚СЊ СЂРµРїРѕСЃС‚ Р·Р°РїРёСЃРё</span>
+<span class="fc" id="L90">    )</span>
+
+    override fun equals(other: Any?): Boolean {
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (this === other) return true</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">        if (javaClass != other?.javaClass) return false</span>
+
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        other as Post</span>
+
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (id != other.id) return false</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (ownerId != other.ownerId) return false</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (fromId != other.fromId) return false</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (createdBy != other.createdBy) return false</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (date != other.date) return false</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (text != other.text) return false</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (replyOwnerId != other.replyOwnerId) return false</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (replyPostId != other.replyPostId) return false</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (friendsOnly != other.friendsOnly) return false</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (comments != other.comments) return false</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (copyright != other.copyright) return false</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (reposts != other.reposts) return false</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (postType != other.postType) return false</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (views != other.views) return false</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (postSource != other.postSource) return false</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (geo != other.geo) return false</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (!copyHistory.contentEquals(other.copyHistory)) return false</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (signerId != other.signerId) return false</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (canPin != other.canPin) return false</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (canDelete != other.canDelete) return false</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (canEdit != other.canEdit) return false</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (isPinned != other.isPinned) return false</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (markedAsAds != other.markedAsAds) return false</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (isFavorite != other.isFavorite) return false</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (donut != other.donut) return false</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (postponedId != other.postponedId) return false</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (likes != other.likes) return false</span>
+
+<span class="nc" id="L126">        return true</span>
+    }
+
+    override fun hashCode(): Int {
+<span class="nc" id="L130">        var result = id.hashCode()</span>
+<span class="nc" id="L131">        result = 31 * result + ownerId.hashCode()</span>
+<span class="nc" id="L132">        result = 31 * result + fromId.hashCode()</span>
+<span class="nc" id="L133">        result = 31 * result + createdBy.hashCode()</span>
+<span class="nc" id="L134">        result = 31 * result + date</span>
+<span class="nc" id="L135">        result = 31 * result + text.hashCode()</span>
+<span class="nc" id="L136">        result = 31 * result + replyOwnerId.hashCode()</span>
+<span class="nc" id="L137">        result = 31 * result + replyPostId.hashCode()</span>
+<span class="nc" id="L138">        result = 31 * result + friendsOnly.hashCode()</span>
+<span class="nc" id="L139">        result = 31 * result + comments.hashCode()</span>
+<span class="nc" id="L140">        result = 31 * result + copyright.hashCode()</span>
+<span class="nc" id="L141">        result = 31 * result + reposts.hashCode()</span>
+<span class="nc" id="L142">        result = 31 * result + postType.hashCode()</span>
+<span class="nc" id="L143">        result = 31 * result + views.hashCode()</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        result = 31 * result + postSource.hashCode()</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        result = 31 * result + geo.hashCode()</span>
+<span class="nc" id="L146">        result = 31 * result + copyHistory.contentHashCode()</span>
+<span class="nc" id="L147">        result = 31 * result + signerId.hashCode()</span>
+<span class="nc" id="L148">        result = 31 * result + canPin.hashCode()</span>
+<span class="nc" id="L149">        result = 31 * result + canDelete.hashCode()</span>
+<span class="nc" id="L150">        result = 31 * result + canEdit.hashCode()</span>
+<span class="nc" id="L151">        result = 31 * result + isPinned.hashCode()</span>
+<span class="nc" id="L152">        result = 31 * result + markedAsAds.hashCode()</span>
+<span class="nc" id="L153">        result = 31 * result + isFavorite.hashCode()</span>
+<span class="nc" id="L154">        result = 31 * result + donut.hashCode()</span>
+<span class="nc" id="L155">        result = 31 * result + postponedId.hashCode()</span>
+<span class="nc" id="L156">        result = 31 * result + likes.hashCode()</span>
+<span class="nc" id="L157">        return result</span>
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
