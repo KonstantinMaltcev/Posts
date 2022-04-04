@@ -1,20 +1,19 @@
 @file:Suppress("NAME_SHADOWING")
 
- class WallService {
+class WallService {
     private var posts = emptyArray<Post>()
     private var randomValues = 0
-     fun add(post: Post): Post {
-//        val uniqueIdSet = mutableSetOf<Int>()
+    fun add(post: Post): Post {
+        val uniqueIdSet = mutableSetOf<Int>()
 
-//        val post = post.copy(id = uniqueIdGenerate(randomValues, uniqueIdSet))
-         val post = post.copy(id = 1) // для теста Update
+        val post = post.copy(id = uniqueIdGenerate(randomValues, uniqueIdSet))
 
-         posts += post
+        posts += post
         println(posts.last())
         return posts.last()
     }
 
-     fun update(post: Post): Boolean {
+    fun update(post: Post): Boolean {
         val postId = post.component1()
         val postNew = post
         for ((index, post) in posts.withIndex()) {
@@ -32,6 +31,9 @@
                     reposts = postNew.reposts,
                     postType = postNew.postType,
                     views = postNew.views,
+                    postSource = postNew.postSource,
+                    geo = postNew.geo,
+                    copyHistory = postNew.copyHistory,
                     signerId = postNew.signerId,
                     canPin = postNew.canPin,
                     canDelete = postNew.canDelete,
@@ -43,7 +45,6 @@
                     postponedId = postNew.postponedId,
                     likes = postNew.likes,
                 )
-                println(posts[index])
                 return true
             }
         }
@@ -51,20 +52,25 @@
 
     }
 
-//    private fun uniqueIdGenerate(
-//        randomValues: Int,
-//        uniqueIdSet: MutableSet<Int>,
-//    ): Long {
-//        while (true) {
-//            val randomValues = (1..3).shuffled().last()
-//            println(randomValues)
-//            if (uniqueIdSet.contains(randomValues)) continue
-//            else {
-//                val keyId = randomValues
-//                uniqueIdSet.add(keyId)
-//            }
-//            break
-//        }
-//        return randomValues.toLong()
-//    }
- }
+    fun clear() {
+        posts = emptyArray()
+    }
+
+    private fun uniqueIdGenerate(
+        randomValues: Int,
+        uniqueIdSet: MutableSet<Int>,
+    ): Int {
+        while (true) {
+            val randomValues = (1..3).shuffled().last()
+            println(randomValues)
+            if (uniqueIdSet.contains(randomValues)) continue
+            else {
+                uniqueIdSet.add(randomValues)
+            }
+            break
+        }
+        return randomValues
+    }
+
+
+}
