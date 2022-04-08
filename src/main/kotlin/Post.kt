@@ -3,7 +3,7 @@ import Platform.ANDROID
 import PostSourceType.*
 
 data class Post(
-    internal val id: Int,                  // Идентификатор записи.
+    internal val id: Int,                   // Идентификатор записи.
     val ownerId: Long,                      // Идентификатор владельца стены, на которой размещена запись.
     val fromId: Long,                       // Идентификатор автора записи (от чьего имени опубликована запись).
     val createdBy: Long,                    // Идентификатор администратора, который опубликовал запись.
@@ -17,9 +17,9 @@ data class Post(
     val reposts: Reposts,                   // Информация о репостах записи («Рассказать друзьям»).
     val postType: PostType,                 // Тип записи, может принимать следующие значения: post, copy, reply, postpone, suggest.
     val views: Views,                       // Информация о просмотрах записи
-    val postSource: PostSource?,             // Информация о способе размещения записи
-    val geo: Geo?,                           // Информация о местоположении
-    val copyHistory: Array<Reposts>?,        // Массив, содержащий историю репостов для записи.
+    val postSource: PostSource?,            // Информация о способе размещения записи
+    val geo: Geo?,                          // Информация о местоположении
+    val copyHistory: Array<Reposts>?,       // Массив, содержащий историю репостов для записи.
     val signerId: Long,                     // Идентификатор автора, если запись была опубликована от имени сообщества и подписана пользователем;
     val canPin: Boolean,                    // Информация о том, может ли текущий пользователь закрепить запись
     val canDelete: Boolean,                 // Информация о том, может ли текущий пользователь удалить запись

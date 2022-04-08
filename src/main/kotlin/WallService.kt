@@ -1,12 +1,24 @@
 @file:Suppress("NAME_SHADOWING")
 
+
 class WallService {
     private var posts = emptyArray<Post>()
-    private var randomValues = 0
-    fun add(post: Post): Post {
-        val uniqueIdSet = mutableSetOf<Int>()
+    private var comments = emptyArray<Comment>()
 
-        val post = post.copy(id = uniqueIdGenerate(randomValues, uniqueIdSet))
+    fun createComment(comment: Comment): Boolean {
+        for (post in posts) {
+            if (post.id == comment.postId) {
+                comments += comment
+               return true
+            }
+            throw  PostNotFoundException(" Пост не найден")
+        }
+        return false
+    }
+
+
+    fun add(post: Post): Post {
+        val post = post.copy(id = uniqueId())
 
         posts += post
         println(posts.last())
@@ -14,36 +26,13 @@ class WallService {
     }
 
     fun update(post: Post): Boolean {
-        val postId = post.component1()
-        val postNew = post
+        val postId = post.id
         for ((index, post) in posts.withIndex()) {
             if (post.id == postId) {
                 posts[index] = post.copy(
-                    ownerId = postNew.ownerId,
-//                    fromId = postNew.fromId, Не обновляем ID владельца записи
-                    createdBy = postNew.createdBy,
-                    text = postNew.text,
-                    replyOwnerId = postNew.replyOwnerId,
-                    replyPostId = postNew.replyPostId,
-                    friendsOnly = postNew.friendsOnly,
-                    comments = postNew.comments,
-                    copyright = postNew.copyright,
-                    reposts = postNew.reposts,
-                    postType = postNew.postType,
-                    views = postNew.views,
-                    postSource = postNew.postSource,
-                    geo = postNew.geo,
-                    copyHistory = postNew.copyHistory,
-                    signerId = postNew.signerId,
-                    canPin = postNew.canPin,
-                    canDelete = postNew.canDelete,
-                    canEdit = postNew.canEdit,
-                    isPinned = postNew.isPinned,
-                    markedAsAds = postNew.markedAsAds,
-                    isFavorite = postNew.isFavorite,
-                    donut = postNew.donut,
-                    postponedId = postNew.postponedId,
-                    likes = postNew.likes,
+                    ownerId = post.ownerId,
+                    date = post.date,
+                    text = post.text
                 )
                 return true
             }
@@ -52,25 +41,10 @@ class WallService {
 
     }
 
-    fun clear() {
-        posts = emptyArray()
-    }
-
-    private fun uniqueIdGenerate(
-        randomValues: Int,
-        uniqueIdSet: MutableSet<Int>,
-    ): Int {
-        while (true) {
-            val randomValues = (1..3).shuffled().last()
-            println(randomValues)
-            if (uniqueIdSet.contains(randomValues)) continue
-            else {
-                uniqueIdSet.add(randomValues)
-            }
-            break
+    private fun uniqueId(): Int {
+        if (posts.isEmpty()) {
+            return 1
         }
-        return randomValues
+        return posts.last().id + 1
     }
-
-
 }
