@@ -1,4 +1,4 @@
-class AudioAttachments(audio: Audio, override val type: String = "Audio") : Attachments {
+data class AudioAttachments(val audio: Audio, override val type: String = "Audio") : Attachments {
 
     data class Audio(
         val id: Int,                            // идентификатор аудиозаписи
@@ -10,3 +10,4 @@ class AudioAttachments(audio: Audio, override val type: String = "Audio") : Atta
         val date: Int,                          // дата добавления аудиозаписи
     )
 }
+// Максим Шестоперов одобрил данную конструкцию в данном, конкретном случае. Поэтому оставлю так.

@@ -1,6 +1,4 @@
-import java.awt.datatransfer.ClipboardOwner
-
-class VideoAttachments (video: Video, override val type: String = "Video"):Attachments  {
+data class VideoAttachments (val video: Video, override val type: String = "Video"): Attachments {
 
     data class Video(
         val id: Int,                   // id записи

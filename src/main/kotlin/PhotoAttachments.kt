@@ -1,4 +1,4 @@
-class PhotoAttachments (photo: Photo, override val type: String = "Photo"): Attachments {
+data class PhotoAttachments (val photo: Photo, override val type: String = "Photo"): Attachments {
 
     data class Photo(
         val id: Int,                   // идентификатор фотографии

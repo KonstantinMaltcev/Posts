@@ -5,7 +5,7 @@ class WallServiceTest {
     private var posts = emptyArray<Post>()
     private val service = WallService()
     private val post: Post
-        get() = Post(id = 1,
+        get() = Post(id = 0,
             ownerId = 1,
             fromId = 1,
             createdBy = 1,
@@ -83,7 +83,7 @@ class WallServiceTest {
                     player = "URL"
                 )))))
         //assert
-        assertNotEquals(1, result.id)
+        assertNotEquals(0, result.id)
     }
 
     @Test
@@ -92,7 +92,7 @@ class WallServiceTest {
 
         val service = WallService()
         service.add(
-            Post(id = 1,
+            Post(id = 0,
                 ownerId = 1,
                 fromId = 1,
                 createdBy = 1,
@@ -161,7 +161,7 @@ class WallServiceTest {
                     player = "URL"
                 )))))
         service.add(
-            Post(id = 1,
+            Post(id = 2,
                 ownerId = 1,
                 fromId = 1,
                 createdBy = 1,
@@ -199,7 +199,7 @@ class WallServiceTest {
         //akt
 
         val update = Post(
-            id = 0,
+            id = 1,
             ownerId = 1,
             fromId = 1,
             createdBy = 1,
@@ -235,6 +235,7 @@ class WallServiceTest {
             ))))
 
         val result = service.update(update)
+
         //assert
 
         assertTrue(result)
@@ -355,7 +356,7 @@ class WallServiceTest {
         //akt
         val result = service.update(
             Post(
-                id = 3,
+                id = 0,
                 ownerId = 1,
                 fromId = 1,
                 createdBy = 1,
@@ -394,4 +395,124 @@ class WallServiceTest {
         //assert
         assertFalse(result)
     }
+
+    @Test(expected = PostNotFoundException::class)
+    fun shouldThrow() {
+
+        val service = WallService()
+        service.add(Post(id = 1,
+            ownerId = 1,
+            fromId = 1,
+            createdBy = 1,
+            date = 1213456,
+            text = "Kavabanga-a-a",
+            replyOwnerId = 1,
+            replyPostId = 1,
+            friendsOnly = false,
+            comments = Post.Comments(),
+            copyright = Post.Copyright(),
+            reposts = Post.Reposts(),
+            postType = PostType.Post,
+            views = Post.Views(),
+            postSource = Post.PostSource(),
+            geo = Post.Geo(),
+            copyHistory = null,
+            signerId = 1,
+            canPin = false,
+            canDelete = false,
+            canEdit = false,
+            isPinned = false,
+            markedAsAds = false,
+            isFavorite = false,
+            donut = Post.Donut(editMode = EditMode.all),
+            postponedId = 1,
+            likes = Post.Likes(),
+            attachments = arrayOf(LinkAttachments(LinkAttachments.Link(
+                url = "https://",
+                title = "Кот-обормот",
+                caption = "",
+                description = "Ссылка на кота-обормота"
+            )))
+        )
+        )
+        service.createComment(
+            Comment(
+                id = 0,
+                postId = 0,
+                fromId = 0,
+                date = 0,
+                text = "",
+                replyToUser = 0,
+                replyToComment = 0,
+                attachments = arrayOf(VideoAttachments(VideoAttachments.Video(
+                    id = 1,
+                    ownerId = 100,
+                    title = "Кот-обормот",
+                    views = 10000,
+                    player = "URL")))
+            ))
+
+    }
+
+    @Test
+    fun shouldTrue() {
+        //       arrange
+
+        val service = WallService()
+        service.add(Post(id = 1,
+            ownerId = 1,
+            fromId = 1,
+            createdBy = 1,
+            date = 1213456,
+            text = "Kavabanga-a-a",
+            replyOwnerId = 1,
+            replyPostId = 1,
+            friendsOnly = false,
+            comments = Post.Comments(),
+            copyright = Post.Copyright(),
+            reposts = Post.Reposts(),
+            postType = PostType.Post,
+            views = Post.Views(),
+            postSource = Post.PostSource(),
+            geo = Post.Geo(),
+            copyHistory = null,
+            signerId = 1,
+            canPin = false,
+            canDelete = false,
+            canEdit = false,
+            isPinned = false,
+            markedAsAds = false,
+            isFavorite = false,
+            donut = Post.Donut(editMode = EditMode.all),
+            postponedId = 1,
+            likes = Post.Likes(),
+            attachments = arrayOf(LinkAttachments(LinkAttachments.Link(
+                url = "https://",
+                title = "Кот-обормот",
+                caption = "",
+                description = "Ссылка на кота-обормота"
+            )))
+        )
+        )
+        //akt
+        val result = service.createComment(
+            Comment(
+                id = 0,
+                postId = 1,
+                fromId = 0,
+                date = 0,
+                text = "",
+                replyToUser = 0,
+                replyToComment = 0,
+                attachments = arrayOf(VideoAttachments(VideoAttachments.Video(
+                    id = 1,
+                    ownerId = 100,
+                    title = "Кот-обормот",
+                    views = 10000,
+                    player = "URL")))
+            ))
+        //assert
+        assertTrue(result)
+    }
+
 }

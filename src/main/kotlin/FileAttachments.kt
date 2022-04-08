@@ -1,4 +1,4 @@
-class FileAttachments(file: File, override val type: String = "File") : Attachments {
+data class FileAttachments(val file: File, override val type: String = "File") : Attachments {
 
     data class File(
         val id: Int,                       // id файла
