@@ -1,0 +1,3 @@
+enum class DataType {
+    PROFILE_ACTIVITY, PROFILE_PHOTO, COMMENTS, LIKE, POLL
+}
