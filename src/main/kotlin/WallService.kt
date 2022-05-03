@@ -9,10 +9,10 @@ class WallService {
         for (post in posts) {
             if (post.id == comment.postId) {
                 comments += comment
-               return true
+                return true
             }
-            throw  PostNotFoundException(" Пост не найден")
         }
+        if (comments.isEmpty()) throw  PostNotFoundException("Пост не найден")
         return false
     }
 
